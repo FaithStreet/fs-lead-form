@@ -17,7 +17,13 @@ get '/' do
 end
 
 post '/leads' do
-  @lead = Lead.create!(email:params[:email],church_size:params[:churchSize])
+  @lead = Lead.new(email:params[:email],church_size:params[:churchSize])
+
+  if @lead.save
+    status 201
+  else
+    status 500
+  end
 end
 
 get '/leads' do

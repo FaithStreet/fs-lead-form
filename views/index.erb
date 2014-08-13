@@ -76,41 +76,48 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
               <input id="churchSize" name="churchSize" type="text" placeholder="e.g. 150" required>
           </div>
 
-          <button id="go" class="button-xlarge pure-button">Calculate</button>
+          <div id="results">
+            <button id="go" class="button-xlarge pure-button">Calculate</button>
+          </div>
         </fieldset>
       </form>
     </div><!-- end of #pureform -->
 
-    <div id="output">
 
-    </div>
 
     <script src="/jquery-1.8.2.min.js"></script>
     <script type="text/javascript">
     var churchSize,
-    leadForm=$("#leadForm"),
-    potentialIncreaseAmt;
+    potentialIncreaseAmt
+    goBtn=$('#go').clone();
+
 
       var potentialIncrease = function(churchSize) {
          return 87 * churchSize;
       };
 
+      var handleReset = function() {
+        $("#churchSize").val('');
+        $("#email").val('');
+        $("#results").html(goBtn);
+      };
 
       $( document ).ready(function() {
-        leadForm.submit(function(e) {
+
+
+        $("#leadForm").submit(function(e) {
           e.preventDefault();
 
           $.ajax({
             url:'/leads',
-            data:leadForm,
+            data:$("#leadForm").serialize(),
             type:'POST',
-            ajax:true
           })
           .done(function(m){
            churchSize = Number($("#churchSize").val());
             potentialIncreaseAmt = potentialIncrease(churchSize);
         
-            $("#output").html("Projected Annual Increase: $" + potentialIncreaseAmt);
+            $("#results").html("<div id='output'>Projected Annual Increase: $" + potentialIncreaseAmt + "</div><p><a href='#' id='resetBtn' onClick='handleReset()'>reset</a></p>");
           });
 
         });
