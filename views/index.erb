@@ -88,7 +88,7 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
     <script src="/jquery-1.8.2.min.js"></script>
     <script type="text/javascript">
     var churchSize,
-    leadForm,
+    leadForm=$("#leadForm"),
     potentialIncreaseAmt;
 
       var potentialIncrease = function(churchSize) {
@@ -97,7 +97,7 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
 
 
       $( document ).ready(function() {
-        $("#leadForm").submit(function(e) {
+        leadForm.submit(function(e) {
           e.preventDefault();
 
           $.ajax({
