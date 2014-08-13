@@ -1,0 +1,14 @@
+<html>
+
+<body>
+  
+  <ul>
+    <% @leads.each do |lead| %>
+
+      <li><%= "#{lead.email} - #{lead.church_size}" %></li>
+
+    <% end %>
+  </ul>
+</body>
+
+</html>
