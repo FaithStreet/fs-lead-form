@@ -12,6 +12,18 @@ class Lead
 end
 
 
+def authorized?
+  @auth = Rack::Auth::Basic::Request.new(request.env)
+  @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [ENV['AUTH_USERNAME'],ENV['AUTH_PASSWORD']]
+end
+
+def authenticate_user!
+  if !authorized? && settings.production?
+    response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
+    throw(:halt, [401, "Authentication required!"])
+  end
+end
+
 get '/' do
   erb :index
 end
@@ -27,6 +39,7 @@ post '/leads' do
 end
 
 get '/leads' do
+  authenticate_user!
   @leads = Lead.all
 
   erb :lead_index
